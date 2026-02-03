@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id @default(uuid())
+  name      String
+  email     String @unique
+  password  String
+  bio       String?
+  photoUrl  String?
+
+  createdAt DateTime @default(now())
+
+  books Book[] @relation("BookCreator")
+  watchlistItemns ShelfItem[]
+
+ 
+}
+
+model Book {
+  id          String @id @default(uuid())
+  title       String
+  overview    String?
+  releaseYear Int 
+  genres      String[] @default([])
+  pages       Int
+  coverUrl    String?
+  author      String
+  createdBy   String
+  publisher   String
+  rate        Float?
+  ISBN        String[] @default([])
+  subtitle        String?
+  language        String?
+  publishedDate   String?
+  ratingsCount    Int?
+  googleVolumeId  String?
+  previewLink     String?
+  infoLink        String?
+  raw             Json?     
+  source          String?
+  appRatingSum    Float      @default(0)
+  appRatingCount  Float      @default(0)
+  appRatingAvg    Float    @default(0) 
+  displayRate     Float?    
+  createdAt   DateTime @default(now())
+  creator User @relation("BookCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  watchlistItemns ShelfItem[]
+
+  
+}
+
+
+model ShelfItem {
+  id          String @id @default(uuid())
+  userId      String
+  bookId      String
+  status      BookStatus @default(PLANNED) 
+  rating      Float?
+  pagesRead   Int?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+
+  //Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+ @@unique([userId, bookId])
+
+}
+
+enum BookStatus {
+  PLANNED
+  READING
+  READ
+  DROPPED
+}
