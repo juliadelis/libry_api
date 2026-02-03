@@ -187,7 +187,9 @@ const addBookByIsbn = async (req, res) => {
     return res.status(201).json({ data: created, cached: false });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Erro ao buscar/salvar livro" });
+    return res
+      .status(500)
+      .json({ error: `Erro ao buscar/salvar livro: ${err}` });
   }
 };
 
