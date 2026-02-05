@@ -4,6 +4,7 @@ import {
   removeFromShelf,
   updateFromShelf,
   setShelfItemRating,
+  viewShelf,
 } from "../controllers/shelfController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { validateRequest } from "../middleware/validateRequest.js";
