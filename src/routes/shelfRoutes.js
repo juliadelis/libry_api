@@ -20,7 +20,9 @@ router.post("/", validateRequest(addToShelfSchema), addToShelf);
 
 router.put("/:id", validateRequest(updateShelfSchema), updateFromShelf);
 
-router.patch("/shelf/:shelfItemId/rating", setShelfItemRating);
+router.patch("/:shelfItemId/rating", setShelfItemRating);
+
+router.get("/:userId", viewShelf);
 
 router.delete("/:id", removeFromShelf);
 

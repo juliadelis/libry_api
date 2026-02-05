@@ -1,5 +1,47 @@
 import { prisma } from "../config/db.js";
 
+const viewShelf = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    // Get all shelf items for the user with complete book information
+    const shelfItems = await prisma.shelfItem.findMany({
+      where: { userId },
+      include: {
+        book: true, // Include all book details
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (shelfItems.length === 0) {
+      return res.status(200).json({
+        status: "Success",
+        data: {
+          userId,
+          shelfItems: [],
+          totalBooks: 0,
+        },
+      });
+    }
+
+    res.status(200).json({
+      status: "Success",
+      data: {
+        userId,
+        shelfItems,
+        totalBooks: shelfItems.length,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: "Failed to retrieve shelf",
+      message: error.message,
+    });
+  }
+};
+
 const addToShelf = async (req, res) => {
   const { bookId, status, rating, notes } = req.body;
 
@@ -206,4 +248,10 @@ const removeFromShelf = async (req, res) => {
   });
 };
 
-export { addToShelf, removeFromShelf, updateFromShelf, setShelfItemRating };
+export {
+  addToShelf,
+  removeFromShelf,
+  updateFromShelf,
+  setShelfItemRating,
+  viewShelf,
+};

@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from "./config/db.js";
 import cors from "cors";
 
 //Import Routes
+import userRoutes from "./routes/userRoute.js";
 import bookRoutes from "./routes/bookRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import shelfRoutes from "./routes/shelfRoutes.js";
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API routes
+app.use("/users", userRoutes);
 app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 app.use("/shelf", shelfRoutes);
