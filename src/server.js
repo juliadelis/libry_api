@@ -8,6 +8,7 @@ import userRoutes from "./routes/userRoute.js";
 import bookRoutes from "./routes/bookRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import shelfRoutes from "./routes/shelfRoutes.js";
+import goalRoutes from "./routes/goalRoutes.js";
 
 config();
 connectDB();
@@ -37,6 +38,7 @@ app.use("/users", userRoutes);
 app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 app.use("/shelf", shelfRoutes);
+app.use("/goals", goalRoutes);
 
 const PORT = 5002;
 const server = app.listen(PORT, () => {
